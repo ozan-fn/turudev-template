@@ -1,6 +1,7 @@
-import 'dotenv/config';
-import { drizzle } from "drizzle-orm/mysql2";
-import mysql from "mysql2/promise";
+import { PrismaClient } from "@prisma/client";
 
-const pool = mysql.createPool(process.env.DATABASE_URL!);
-export const db = drizzle(pool);
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+
+export const db = globalForPrisma.prisma ?? new PrismaClient();
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;

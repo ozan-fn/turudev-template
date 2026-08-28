@@ -11,7 +11,7 @@ async function main() {
     },
   });
   console.log("Seeded: test@example.com / password");
-  await db.$client.end();
+  await db.$disconnect();
 }
 
 main();

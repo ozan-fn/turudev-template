@@ -1,35 +1,61 @@
-# React + TypeScript + Vite
+# turudev
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Full-stack web app with React, TypeScript, Vite, Nitro, Drizzle ORM, Better Auth, dan Tailwind CSS.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Frontend**: React 19, React Router, Tailwind CSS
+- **Backend**: Nitro (server API)
+- **Database**: MySQL via Drizzle ORM
+- **Auth**: Better Auth
+- **Build**: Vite, TypeScript, Bun
 
-## React Compiler
+## Struktur Proyek
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```
+src/
+  pages/        # Halaman (Home, Login, Dashboard)
+  lib/          # auth-client
+server/
+  api/          # API routes
+  db/           # Schema, seed, koneksi DB
+  lib/          # auth server
+drizzle/        # Migrasi database
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Setup
+
+1. Install dependensi:
+   ```bash
+   bun install
+   ```
+
+2. Salin `.env` dan isi variabel yang dibutuhkan (database URL, auth secret, dll).
+
+3. Jalankan migrasi:
+   ```bash
+   bunx drizzle-kit migrate
+   ```
+
+4. Seed database (opsional):
+   ```bash
+   bun server/db/seed.ts
+   ```
+
+## Development
+
+```bash
+bun run dev
+```
+
+## Build
+
+```bash
+bun run build
+```
+
+## Lint
+
+```bash
+bun run lint
+```

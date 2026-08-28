@@ -4,71 +4,67 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model User {
-  id            String    @id
-  name          String    @db.Text
-  email         String
+  id            String    @id @map("_id")
+  name          String
+  email         String    @unique
   emailVerified Boolean   @default(false)
-  image         String?   @db.Text
+  image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
 
-  @@unique([email])
   @@map("user")
 }
 
 model Session {
-  id        String   @id
+  id        String   @id @map("_id")
   expiresAt DateTime
-  token     String
+  token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  ipAddress String?  @db.Text
-  userAgent String?  @db.Text
+  ipAddress String?
+  userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
-  @@index([userId(length: 191)])
   @@map("session")
 }
 
 model Account {
-  id                    String    @id
-  issuer                String    @db.VarChar(191)
-  accountId             String    @db.VarChar(191)
-  providerId            String    @db.Text
+  id                    String    @id @map("_id")
+  issuer                String
+  accountId             String
+  providerId            String
   userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?   @db.Text
-  refreshToken          String?   @db.Text
-  idToken               String?   @db.Text
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
   accessTokenExpiresAt  DateTime?
   refreshTokenExpiresAt DateTime?
-  scope                 String?   @db.Text
-  password              String?   @db.Text
+  scope                 String?
+  password              String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([issuer, accountId], map: "account_issuer_accountId_uidx")
-  @@index([userId(length: 191)])
+  @@unique([issuer, accountId])
   @@map("account")
 }
 
 model Verification {
-  id         String   @id
-  identifier String   @db.Text
-  value      String   @db.Text
+  id         String   @id @map("_id")
+  identifier String
+  value      String
   expiresAt  DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  @@index([identifier(length: 191)])
   @@map("verification")
 }

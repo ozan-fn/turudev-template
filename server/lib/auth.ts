@@ -4,7 +4,7 @@ import { db } from "../db";
 
 export const auth = betterAuth({
     database: prismaAdapter(db, {
-      provider: "mysql",
+      provider: "mongodb",
     }),
     emailAndPassword: {
        enabled: true,

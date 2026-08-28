@@ -9,6 +9,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const { data: session, isPending } = authClient.useSession();
 
   if (isPending) return null;
@@ -20,7 +22,9 @@ export default function Login() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setLoading(true);
     const { error } = await authClient.signIn.email({ email, password });
+    setLoading(false);
     if (error) {
       setError(error.message ?? "Login failed");
       return;
@@ -54,9 +58,10 @@ export default function Login() {
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <button
           type="submit"
-          className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+          disabled={loading}
+          className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Login
+          {loading ? "Loading..." : "Login"}
         </button>
       </form>
     </main>

@@ -1,12 +1,16 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { authClient } from "../lib/auth-client";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { data: session, isPending } = authClient.useSession();
 
   async function handleLogout() {
+    setLoading(true);
     await authClient.signOut();
+    setLoading(false);
     navigate("/login");
   }
 
@@ -23,9 +27,10 @@ export default function Dashboard() {
       <button
         type="button"
         onClick={handleLogout}
-        className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+        disabled={loading}
+        className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        Logout
+        {loading ? "Loading..." : "Logout"}
       </button>
     </main>
   );

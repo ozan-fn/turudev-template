@@ -9,6 +9,14 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const { data: session, isPending } = authClient.useSession();
+
+  if (isPending) return null;
+  if (session) {
+    navigate(searchParams.get("next") ?? "/dashboard");
+    return null;
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");

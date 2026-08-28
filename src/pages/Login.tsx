@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { authClient } from "../lib/auth-client";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,7 +17,7 @@ export default function Login() {
       setError(error.message ?? "Login failed");
       return;
     }
-    navigate("/dashboard");
+    navigate(searchParams.get("next") ?? "/dashboard");
   }
 
   return (

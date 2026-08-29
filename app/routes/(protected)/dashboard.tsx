@@ -1,5 +1,8 @@
 import { useOutletContext, useNavigate } from "react-router";
 import { authClient } from "~/lib/auth-client";
+import { Navbar } from "~/components/navbar";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 
 export function meta() {
   return [{ title: "Dashboard — TuruDev" }];
@@ -11,28 +14,29 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-dvh">
-      <header className="border-b border-neutral-800">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <span className="text-sm font-semibold tracking-tight">TuruDev</span>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-neutral-400">{user.name || user.email}</span>
-            <button
-              onClick={() => authClient.signOut({ fetchOptions: { onSuccess: () => navigate("/login") } })}
-              className="cursor-pointer rounded-lg border border-neutral-700 px-3 py-1.5 text-sm text-neutral-300 hover:border-neutral-100 hover:text-neutral-100"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
+      <Navbar>
+        <span className="text-sm text-muted-foreground">{user.name || user.email}</span>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => authClient.signOut({ fetchOptions: { onSuccess: () => navigate("/login") } })}
+        >
+          Logout
+        </Button>
+      </Navbar>
 
       <main className="mx-auto max-w-5xl px-6 py-10">
-        <div className="rounded-lg border border-neutral-800 bg-neutral-900 p-6">
-          <h2 className="text-lg font-semibold tracking-tight">
-            Welcome, {user.name || "User"}!
-          </h2>
-          <p className="mt-1 text-sm text-neutral-400">Signed in as {user.email}</p>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Welcome, {user.name || "User"}!</CardTitle>
+            <CardDescription>Signed in as {user.email}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              This is a protected dashboard. Only authenticated users can see it.
+            </p>
+          </CardContent>
+        </Card>
       </main>
     </div>
   );

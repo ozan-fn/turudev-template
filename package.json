@@ -2,6 +2,9 @@
   "name": "",
   "private": true,
   "type": "module",
+  "prisma": {
+    "seed": "bunx tsx prisma/seed.ts"
+  },
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
@@ -9,9 +12,14 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@prisma/client": "6",
     "@react-router/node": "^8",
     "@react-router/serve": "^8",
+    "better-auth": "^1.7.2",
+    "dotenv": "^17.4.2",
     "isbot": "^5.1.36",
+    "mongodb": "^7.6.0",
+    "prisma": "6",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router": "^8"
